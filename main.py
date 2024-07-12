@@ -3,12 +3,11 @@ import os
 from pydantic import BaseModel
 from fastapi import FastAPI
 from dotenv import load_dotenv
-app = FastAPI()
 
 load_dotenv()
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
-
+app = FastAPI()
 
 function_descriptions = [
     {
