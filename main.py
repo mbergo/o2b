@@ -57,7 +57,7 @@ def analyse(email: Email):
         "role": "user",}]
     
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4o-2024-05-13",
         messages=messages,
         functions=function_descriptions,
         function_call="auto",
