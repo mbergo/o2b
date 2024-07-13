@@ -40,8 +40,8 @@ function_descriptions = [
     }
 ]
                     
-class Meet(BaseModel):
-    meeting: str
+class Email(BaseModel):
+    from_email: str
     content: str
 
 @app.get("/")
@@ -49,8 +49,8 @@ def read_root():
     return {"Hello": "World"}
     
 @app.post("/")
-def analyse(meet: Meet):
-    content = meet.content
+def analyse(email: Email):
+    content = email.content
     query = f"Please extract insights from this meeting {content}"
     
     messages = [{
