@@ -1,11 +1,10 @@
 import openai
 import os
-from pydantic import BaseModel
-from fastapi import FastAPI
 from dotenv import load_dotenv
+from fastapi import FastAPI
+from pydantic import BaseModel
 
 load_dotenv()
-
 openai.api_key = os.getenv("OPENAI_API_KEY")
 app = FastAPI()
 
@@ -62,6 +61,13 @@ def analyse(email: Email):
         functions=function_descriptions,
         function_call="auto",
     )
+    
+    # openai.ChatCompletion.create(
+    #     model="gpt-4o-2024-05-13",
+    #     messages=messages,
+    #     functions=function_descriptions,
+    #     function_call="auto",
+    # )
     # return response
     
     arguments = response.choices[0]["message"]["function_call"]["arguments"]
