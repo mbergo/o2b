@@ -1,4 +1,4 @@
 fastapi
-openai=0.28.0
+openai==0.28.0
 python-dotenv
 pydantic
