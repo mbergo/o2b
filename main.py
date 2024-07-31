@@ -15,36 +15,24 @@ app = FastAPI()
 function_descriptions = [
     {
         "name": "extract_info_from_email",
-        "description": "Extract key info from an email, such as goals, planning or technical problems or warnings, client name, meeting agenda, summary, etc.",
+        "description": "Extract key info from an email, and identify if the email will bring some important information or enact some action from me.",
         "parameters": {
             "type": "object",
             "properties": {
-                "clientName": {
+                "sender": {
                     "type": "string",
-                    "description": "the name of the client in each context of the email."
+                    "description": "The sender of the email."
                 },                                        
-                "problems": {
+                "summary": {
                     "type": "string",
-                    "description": "Try to identify any problems with the client's current setup or any technical problems they are facing or about what was planned."
+                    "description": "A brief summary of the email."
                 },
-                "agenda":{
+                "importance": {
                     "type": "string",
-                    "description": "Try to identify the the topic that were discussed in the email and a brief summary of each topic."
-                },
-                "improvements": {
-                    "type": "string",
-                    "description": "Try to suggest any improvements that could be made to the client's current setup or any technical problems they are facing. Suggest changes in process or technology. Be creative."
-                },
-                "planningNext":{
-                    "type": "string",
-                    "description": "What is the suggested next step to avoid those mistakes to happen again."
-                },
-                "productivity": {
-                    "type": "string",
-                    "description": "Try to give a productivity score to this email based on how likely this email will leads to a good business opportunity, from 0 to 10; 10 most important"
+                    "description": "Try to give an importance to this email based on if do I need to know that? Do I need to act upon? Do I need to reply? Do I need to schedule a meeting? etc."
                 },
             },
-            "required": ["clientName", "problems", "agenda", "improvements", "planningNext", "productivity"]
+            "required": ["sender", "summary", "importance"]
         }
     }
 ]
@@ -93,18 +81,12 @@ def analyse_email(email: Email):
     )
 
     arguments = response.choices[0]["message"]["function_call"]["arguments"]
-    clientName = eval(arguments).get("clientName")
-    problems = eval(arguments).get("problems")
-    agenda = eval(arguments).get("agenda")
-    improvements = eval(arguments).get("improvements")
-    planningNext = eval(arguments).get("planningNext")
-    productivity = eval(arguments).get("productivity")
+    sender = eval(arguments).get("sender")
+    summary = eval(arguments).get("summary")
+    importance = eval(arguments).get("importance")
 
     return {
-        "clientName": clientName,
-        "problems": problems,
-        "agenda": agenda,
-        "improvements": improvements,
-        "planningNext": planningNext,
-        "productivity": productivity
+        "sender": sender,
+        "summary": summary,
+        "importance": importance
     }
