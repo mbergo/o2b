@@ -3,7 +3,7 @@ import json
 
 print(
     requests.post(
-        "http://0.0.0.0:8000/",
+        "https://o2b.onrender.com/",
         json={
             "from_email": "John@o2b.com.br",
             "content": """
