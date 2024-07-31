@@ -35,9 +35,9 @@ function_descriptions = [
                     "type": "string",
                     "description": "Try to suggest any improvements that could be made to the client's current setup or any technical problems they are facing. Suggest changes in process or technology. Be creative."
                 },
-                "planningNext":{
+                "tasks":{
                     "type": "string",
-                    "description": "What is the suggested next step to avoid those mistakes to happen again."
+                    "description": "Which tasks are planned for the next meeting or for the next steps."
                 },
                 "productivity": {
                     "type": "string",
