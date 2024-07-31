@@ -33,7 +33,7 @@ function_descriptions = [
                 },
                 "improvements": {
                     "type": "string",
-                    "description": "Try to suggest any improvements that could be made to the client's current setup or any technical problems they are facing."
+                    "description": "Try to suggest any improvements that could be made to the client's current setup or any technical problems they are facing. Suggest changes in process or technology. Be creative."
                 },
                 "planningNext":{
                     "type": "string",
