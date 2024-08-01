@@ -14,6 +14,7 @@ function_descriptions = [
         "name": "extract_info_from_email",
         "description": "Extrair informações de email de modo a poder sugerir melhorias e outros quesitos.",
         "parameters": {
+        
             "type": "object",
             "properties": {
             "From": {
@@ -93,6 +94,7 @@ function_descriptions = [
                 "description": "Dê um adjetivo para cada participante acerca de sua personalidade, combine todo o contexto, o que foi falado, os momentos, etc e de uma opinão?"
             }
         }
+    }
         required: [ 
             "From", "Assunto da Reunião", "Problemas Identificados", "Soluções Propostas", "Tarefas Atribuídas", "Decisões Tomadas", "Ações Pendentes", "Feedback do Cliente", "Follow-up Necessario", "Recursos Necessarios", "Pontos de Atencao", "Data da Proxima Reuniao", "Participantes", "Documentos Anexados", "Status", "Notas Adicionais", "Processos", "Educacao", "Personalidade"   
             ]
