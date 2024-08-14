@@ -127,17 +127,16 @@ def analyse_email(email: Email):
     )
 
     arguments = response.choices[0]["message"]["function_call"]["arguments"]
-    participantes = eval(arguments["Participantes"])
-    assunto_da_reuniao = eval(arguments["AssuntoDaReuniao"])
-    problemas_identificados = eval(arguments["ProblemasIdentificados"])
-    solucoes = eval(arguments["Solucoes"])
-    acordados = eval(arguments["Acordados"])
-    acoes_pendentes = eval(arguments["AcoesPendentes"])
-    feedback_do_cliente = eval(arguments["FeedbackDoCliente"])
-    follow_up_necessario = eval(arguments["Follow-upNecessario"])
-    recursos_necessarios = eval(arguments["RecursosNecessarios"])
-    pontos_de_atencao = eval(arguments["PontosDeAtencao"])
-        
+    participantes = eval(arguments).get("Participantes")
+    assunto_da_reuniao = eval(arguments).get("AssuntoDaReuniao")
+    problemas_identificados = eval(arguments).get("ProblemasIdentificados")
+    solucoes = eval(arguments).get("Solucoes")
+    acordados = eval(arguments).get("Acordados")
+    acoes_pendentes = eval(arguments).get("AcoesPendentes")
+    feedback_do_cliente = eval(arguments).get("FeedbackDoCliente")
+    follow_up_necessario = eval(arguments).get("Follow-upNecessario")
+    recursos_necessarios = eval(arguments).get("RecursosNecessarios")
+    pontos_de_atencao = eval(arguments).get("PontosDeAtencao")
 
 
     return {
