@@ -12,13 +12,13 @@ app = FastAPI()
 function_descriptions = [
     {
         "name": "extract_info_from_email",
-        "description": "Extrair informações de email de modo a poder sugerir melhorias e outros quesitos.",
+        "description": "Extrair informações do email para tirar dados e formular insights.",
         "parameters": {
             "type": "object",
             "properties": {
-                "From": {
+                "Participantes": {
                     "type": "string",
-                    "description": "Nome do remetente."
+                    "description": "Nome dos Participantes da reunião."
                 },
                 "AssuntoDaReuniao": {
                     "type": "string",
@@ -26,23 +26,19 @@ function_descriptions = [
                 },
                 "ProblemasIdentificados": {
                     "type": "string",
-                    "description": "Lista dos problemas discutidos e detalhamento dos mesmos."
+                    "description": "Lista dos problemas, gaps ou necessidades expressadas na reunião."
                 },
-                "SolucoesPropostas": {
+                "Solucoes": {
                     "type": "string",
-                    "description": "Soluções sugeridas para cada problema identificado."
+                    "description": "Soluções sugeridas para cada item identificado identificado."
                 },
-                "TarefasAtribuidas": {
+                "Acordados": {
                     "type": "string",
-                    "description": "Tarefas que foram delegadas, incluindo quem é responsável e o prazo para conclusão de cada tarefa."
-                },
-                "DecisoesTomadas": {
-                    "type": "string",
-                    "description": "Principais decisões inferidas baseadas na conversação durante a reunião."
+                    "description": "Principais acordos ou tarefas definidas durante a reunião."
                 },
                 "AcoesPendentes": {
                     "type": "string",
-                    "description": "Ações que ainda precisam ser concluídas e quem está responsável por elas."
+                    "description": "Ações que possam ser extraidas dentro do que foi descutido no formato: <pessoa>:<ação>."
                 },
                 "FeedbackDoCliente": {
                     "type": "string",
@@ -60,59 +56,18 @@ function_descriptions = [
                     "type": "string",
                     "description": "Deduza questoes que precisam de atenção especial no presente e/ou podem se tornar problemas no futuro."
                 },
-                "DataDaProximaReuniao": {
-                    "type": "string",
-                    "description": "Agendamento da proxima reunião, se tiver sido mencionado."
-                },
-                "Participantes": {
-                    "type": "string",
-                    "description": "Nome dos participantes da reunião."
-                },
-                "DocumentosAnexados": {
-                    "type": "string",
-                    "description": "Documentos anexados ou mencionados."
-                },
-                "Status": {
-                    "type": "string",
-                    "description": "Status atual do projeto, se possível inferir baseado na assertividade da conversa."
-                },
-                "NotasAdicionais": {
-                    "type": "string",
-                    "description": "Qualquer informação adicional relevante que não se enquadre em outros itens."
-                },
-                "Processos": {
-                    "type": "string",
-                    "description": "Alguma mudança ou criação de processo dentro da empresa? Caso sim, explique."
-                },
-                "Educacao": {
-                    "type": "string",
-                    "description": "Qual o participante que menos se manteve no contexto técnico, falava de forma abritária e interrompia mais?"
-                },
-                "Personalidade": {
-                    "type": "string",
-                    "description": "Dê um adjetivo para a personalidade de cada participante, considerando o contexto, o que foi falado, a forma de falar, os momentos, etc e a maneira de ser falado."
-                }
             },
             "required": [
-                "From",
+                "Participantes",
                 "AssuntoDaReuniao",
                 "ProblemasIdentificados",
-                "SoluçoesPropostas",
-                "TarefasAtribuidas",
-                "DecisoesTomadas",
-                "AçoesPendentes",
+                "Solucoes",
+                "Acordados",
+                "AcoesPendentes",
                 "FeedbackDoCliente",
                 "Follow-upNecessario",
                 "RecursosNecessarios",
-                "PontosDeAtencao",
-                "DataDaProximaReuniao",
-                "Participantes",
-                "DocumentosAnexados",
-                "Status",
-                "NotasAdicionais",
-                "Processos",
-                "Educacao",
-                "Personalidade"
+                "PontosDeAtencao"
             ]
         }
     }
@@ -160,7 +115,7 @@ def analyse_email(email: Email):
         None
     """
     content = email.content
-    query = f"Por favor, extraia as informaçoes do email: {content} "
+    query = f"Por favor, extraia as informaçoes do texto: {content} "
 
     messages = [{"role": "user", "content": query}]
 
@@ -172,46 +127,28 @@ def analyse_email(email: Email):
     )
 
     arguments = response.choices[0]["message"]["function_call"]["arguments"]
-    clientName = eval(arguments).get("clientName")
-    From = eval(arguments).get("From")
-    AssuntoDaReuniao = eval(arguments).get("AssuntoDaReuniao")
-    ProblemasIdentificados = eval(arguments).get("ProblemasIdentificados")
-    SolucoesPropostas = eval(arguments).get("SolucoesPropostas")
-    TarefasAtribuidas = eval(arguments).get("TarefasAtribuidas")
-    DecisoesTomadas = eval(arguments).get("DecisoesTomadas")
-    AcoesPendentes = eval(arguments).get("AcoesPendentes")
-    FeedbackDoCliente = eval(arguments).get("FeedbackDoCliente")
-    FollowUpNecessario = eval(arguments).get("FollowUpNecessario")
-    RecursosNecessarios = eval(arguments).get("RecursosNecessarios")
-    PontosDeAtençao = eval(arguments).get("PontosDeAtençao")
-    DataDaProximaReuniao = eval(arguments).get("DataDaProximaReuniao")
-    Participantes = eval(arguments).get("Participantes")
-    DocumentosAnexados = eval(arguments).get("DocumentosAnexados")
-    Status = eval(arguments).get("Status")
-    NotasAdicionais = eval(arguments).get("NotasAdicionais")
-    Processos = eval(arguments).get("Processos")
-    Educacao = eval(arguments).get("Educacao")
-    Personalidade = eval(arguments).get("Personalidade")
+    participantes = eval(arguments["Participantes"])
+    assunto_da_reuniao = eval(arguments["AssuntoDaReuniao"])
+    problemas_identificados = eval(arguments["ProblemasIdentificados"])
+    solucoes = eval(arguments["Solucoes"])
+    acordados = eval(arguments["Acordados"])
+    acoes_pendentes = eval(arguments["AcoesPendentes"])
+    feedback_do_cliente = eval(arguments["FeedbackDoCliente"])
+    follow_up_necessario = eval(arguments["Follow-upNecessario"])
+    recursos_necessarios = eval(arguments["RecursosNecessarios"])
+    pontos_de_atencao = eval(arguments["PontosDeAtencao"])
+        
 
 
     return {
-        "From": From,
-        "AssuntoDaReuniao": AssuntoDaReuniao,
-        "ProblemasIdentificados": ProblemasIdentificados,
-        "SolucoesPropostas": SolucoesPropostas,
-        "TarefasAtribuidas": TarefasAtribuidas,
-        "DecisoesTomadas": DecisoesTomadas,
-        "AcoesPendentes": AcoesPendentes,
-        "FeedbackDoCliente": FeedbackDoCliente,
-        "FollowUpNecessario": FollowUpNecessario,
-        "RecursosNecessarios": RecursosNecessarios,
-        "PontosDeAtençao": PontosDeAtençao,
-        "DataDaProximaReuniao": DataDaProximaReuniao,
-        "Participantes": Participantes,
-        "DocumentosAnexados": DocumentosAnexados,
-        "Status": Status,
-        "NotasAdicionais": NotasAdicionais,
-        "Processos": Processos,
-        "Educacao": Educacao,
-        "Personalidade": Personalidade
+        "Participantes": participantes,
+        "AssuntoDaReuniao": assunto_da_reuniao,
+        "ProblemasIdentificados": problemas_identificados,
+        "Solucoes": solucoes,
+        "Acordados": acordados,
+        "AcoesPendentes": acoes_pendentes,
+        "FeedbackDoCliente": feedback_do_cliente,
+        "Follow-upNecessario": follow_up_necessario,
+        "RecursosNecessarios": recursos_necessarios,
+        "PontosDeAtencao": pontos_de_atencao
     }
