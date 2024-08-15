@@ -16,6 +16,10 @@ function_descriptions = [
         "parameters": {
             "type": "object",
             "properties": {
+                "Data": {
+                    "type": "string",
+                    "description": "Data da reunião."
+                },
                 "Participantes": {
                     "type": "string",
                     "description": "Nome dos Participantes da reunião."
@@ -58,6 +62,7 @@ function_descriptions = [
                 },
             },
             "required": [
+                "Data",
                 "Participantes",
                 "AssuntoDaReuniao",
                 "ProblemasIdentificados",
@@ -127,6 +132,7 @@ def analyse_email(email: Email):
     )
 
     arguments = response.choices[0]["message"]["function_call"]["arguments"]
+    data = eval(arguments).get("Data")
     participantes = eval(arguments).get("Participantes")
     assunto_da_reuniao = eval(arguments).get("AssuntoDaReuniao")
     problemas_identificados = eval(arguments).get("ProblemasIdentificados")
@@ -140,6 +146,7 @@ def analyse_email(email: Email):
 
 
     return {
+        "Data": data,
         "Participantes": participantes,
         "AssuntoDaReuniao": assunto_da_reuniao,
         "ProblemasIdentificados": problemas_identificados,
